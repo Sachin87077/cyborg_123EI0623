@@ -12,9 +12,9 @@ class turtlebot():
     def init(self):
 
     
-        rospy.init_node('turtlebot_controller', anonymous=True)
-        self.velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
-        self.pose_subscriber = rospy.Subscriber('/turtle1/pose', Pose, self.callback)
+        rcply.init_node('turtlebot_controller', anonymous=True)
+        self.velocity_publisher = rcply.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
+        self.pose_subscriber = rcply.Subscriber('/turtle1/pose', Pose, self.callback)
         self.pose = Pose()
         self.rate = rcply.Rate(10)
 
