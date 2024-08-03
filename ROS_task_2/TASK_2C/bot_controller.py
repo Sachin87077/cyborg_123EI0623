@@ -53,7 +53,7 @@ class SpiralBot(Node):
             goal_angle = math.atan2(dy, dx)
 
           
-            _, _, current_yaw = euler_from_quaternion([
+             current_yaw = euler_from_quaternion([
                 self.current_pose.orientation.x,
                 self.current_pose.orientation.y,
                 self.current_pose.orientation.z,
