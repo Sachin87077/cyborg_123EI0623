@@ -10,12 +10,8 @@ class Task2Bcontroller(Node):
     def __init__(self):
         super().__init__('Task2Bcontroller')
         self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
-        self.subscription = self.create_subscription(
-            Odometry,
-            'odom',
-            self.odom_callback,
-            10)
-        self.subscription 
+        self.subscription = self.create_subscription(Odometry,'odom',self.odom_callback,10)
+        
 
         
         self.current_position = None
