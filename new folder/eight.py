@@ -1,66 +1,66 @@
 #!/usr/bin/env python3
 
 import rclpy
-from rcply.node import Node
-
-from geometry_msgs.msg  import Twist
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
-from math import pow,atan2,sqrt
+from math import pi
 
-class turtlebot():
+class TurtleBot(Node):
 
-    def init(self):
-
-    
-        rcply.init_node('turtlebot_controller', anonymous=True)
-        self.velocity_publisher = rcply.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
-        self.pose_subscriber = rcply.Subscriber('/turtle1/pose', Pose, self.callback)
+    def __init__(self):
+        super().__init__('turtlebot_draw_eight')
+        self.velocity_publisher = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
+        self.pose_subscriber = self.create_subscription(Pose, '/turtle1/pose', self.callback, 10)
         self.pose = Pose()
-        self.rate = rcply.Rate(10)
+        self.rate = self.create_rate(10)
 
+    def callback(self, data):
+        self.pose = data
 
-def callback(self, data):
-    self.pose = data
-    self.pose.x = round(self.pose.x, 4)
-    self.pose.y = round(self.pose.y, 4)
+    def move_circle(self, radius, linear_speed, angular_speed, duration):
+        vel_msg = Twist()
+        vel_msg.linear.x = linear_speed
+        vel_msg.angular.z = angular_speed
 
-def get_distance(self, goal_x, goal_y):
-    distance = sqrt(pow((goal_x - self.pose.x), 2) + pow((goal_y - self.pose.y), 2))
-    return distance
+        start_time = self.get_clock().now()
 
-def move2goal(self):
-    goal_pose = Pose()
-    goal_pose.x = input("Set your x goal:")
-    goal_pose.y = input("Set your y goal:")
-    distance_tolerance = input("Set your tolerance:")
-    vel_msg = Twist()
+        while (self.get_clock().now() - start_time).nanoseconds / 1e9 < duration:
+            self.velocity_publisher.publish(vel_msg)
+            self.rate.sleep()
 
-    while sqrt(pow((goal_pose.x - self.pose.x), 2) + pow((goal_pose.y - self.pose.y), 2)) >= distance_tolerance:
-
-        
-        vel_msg.linear.x = 1.5 * sqrt(pow((goal_pose.x - self.pose.x), 2) + pow((goal_pose.y - self.pose.y), 2))
-        vel_msg.linear.y = 0
-        vel_msg.linear.z = 0
-
-       
-        vel_msg.angular.x = 0
-        vel_msg.angular.y = 0
-        vel_msg.angular.z = 4 * (atan2(goal_pose.y - self.pose.y, goal_pose.x - self.pose.x) - self.pose.theta)
-
-        
+        vel_msg.linear.x = 0
+        vel_msg.angular.z = 0
         self.velocity_publisher.publish(vel_msg)
-        self.rate.sleep()
-    
-    vel_msg.linear.x = 0
-    vel_msg.angular.z =0
-    self.velocity_publisher.publish(vel_msg)
 
-    rcply.spin()
+    def draw_eight(self):
+        radius = 1.0
+        linear_speed = 1.0
+        angular_speed = linear_speed / radius
+
+        
+        circle_duration = 2 * pi / angular_speed
+
+    
+        self.move_circle(radius, linear_speed, angular_speed, circle_duration / 2)
+
+        
+        self.move_circle(0, linear_speed, 0, 1.0)
+
+        
+        self.move_circle(radius, linear_speed, -angular_speed, circle_duration / 2)
+
+        
+        vel_msg = Twist()
+        vel_msg.linear.x = 0
+        vel_msg.angular.z = 0
+        self.velocity_publisher.publish(vel_msg)
+
+def main(args=None):
+    rclpy.init(args=args)
+    turtlebot = TurtleBot()
+    turtlebot.draw_eight()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
-    try:
-        #Testing our function
-        x = turtlebot()
-        x.move2goal()
-
-   
+    main()
