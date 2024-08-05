@@ -9,7 +9,7 @@ from math import pi
 class TurtleBot(Node):
 
     def __init__(self):
-        super().__init__('turtlebot_draw_eight')
+        super().__init__('draw_eight')
         self.velocity_publisher = self.create_publisher(Twist, '/turtle1/cmd_vel', 10)
         self.pose_subscriber = self.create_subscription(Pose, '/turtle1/pose', self.callback, 10)
         self.pose = Pose()
