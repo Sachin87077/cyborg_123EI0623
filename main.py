@@ -4,7 +4,7 @@ def shop_detail(img) -> list:
 
 
 
-    out = []
+    new = []
     for i in range(0, 600, 100):
         shop = img[110:190, i + 110:i + 190]
         gray = cv.cvtColor(shop, cv.COLOR_BGR2GRAY)
@@ -51,60 +51,60 @@ def shop_detail(img) -> list:
                 col = "tmkc"
 
             lst = [f'Shop_{str(shopNum)}', col, shape, [x, y]]
-            out.append(lst)
-    out.sort()
-    return out
+            new.append(lst)
+    new.sort()
+    return new
 
 
 def signals(img) -> list:
 
     map = {"1": "A", "2": "B", "3": "C", "4": "D", "5": "E", "6": "F", "7": "G"}
-    out = []
+    new = []
     for i in range(100, 800, 100):
         for j in range(100, 800, 100):
             if list(img[j, i]) == [0, 0, 255]:
-                cord = (map[[elt for elt in str(i)][0]] + [elt for elt in str(j)][0])
-                out.append(cord)
-    return out
+                mapp = (map[[elt for elt in str(i)][0]] + [elt for elt in str(j)][0])
+                new.append(mapp)
+    return new
 
 
 def start(img) -> list:
     mp = {"1": "A", "2": "B", "3": "C", "4": "D", "5": "E", "6": "F", "7": "G"}
-    out = []
+    new = []
     for i in range(100, 800, 100):
         for j in range(100, 800, 100):
             if list(img[j, i]) == [0, 255, 0]:
-                cord = (mp[[elt for elt in str(i)][0]] + [elt for elt in str(j)][0])
-                out.append(cord)
-    return out
+                mapp = (mp[[elt for elt in str(i)][0]] + [elt for elt in str(j)][0])
+                new.append(mapp)
+    return new
 
 
 def vertical_const(img):
     mp = {"1": "A", "2": "B", "3": "C", "4": "D", "5": "E", "6": "F", "7": "G"}
-    out = list()
+    new = list()
     for i in range(100, 800, 100):
         for j in range(150, 750, 100):
             if list(img[j, i]) != [0, 0, 0]:
                 x = mp[[elt for elt in str(i)][0]]
                 y1 = [elt for elt in str(j - 50)][0]
                 y2 = [elt for elt in str(j + 50)][0]
-                out.append(f'{x}{y1}-{x}{y2}')
+                new.append(f'{x}{y1}-{x}{y2}')
 
-    return out
+    return new
 
 
 def horizontal_const(img):
     mp = {"1": "A", "2": "B", "3": "C", "4": "D", "5": "E", "6": "F", "7": "G"}
-    out = list()
+    new = list()
     for i in range(150, 750, 100):
         for j in range(100, 800, 100):
             if list(img[j, i]) != [0, 0, 0]:
                 x1 = mp[[elt for elt in str(i - 50)][0]]
                 x2 = mp[[elt for elt in str(i + 50)][0]]
                 y = [elt for elt in str(j)][0]
-                out.append(f'{x1}{y}-{x2}{y}')
+                new.append(f'{x1}{y}-{x2}{y}')
 
-    return out
+    return new
 
 
 def detect_arena_parameters(maze_image):
